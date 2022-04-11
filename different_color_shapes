@@ -32,7 +32,7 @@ for i in range(9):
   sammy.forward(100)
   sammy.right(40)
 for i in range(10):
-  sammy.color("brown")
+  sammy.color("pink")
   sammy.forward(100)
   sammy.right(36)
   
