@@ -14,7 +14,6 @@ window.config(padx=20, pady=20)
 
 #Input
 input_mile = Entry(width=7)
-print(input_mile.get())
 input_mile.grid(column=2, row=0)
 
 #Label
