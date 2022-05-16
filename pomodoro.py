@@ -1,4 +1,4 @@
-Import math
+import math
 from tkinter import *
 # ---------------------------- CONSTANTS ------------------------------- #
 PINK = "#e2979c"
@@ -9,17 +9,63 @@ FONT_NAME = "Courier"
 WORK_MIN = 25
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
+reps = 0
+count_timer = None
+
+
+
 
 # ---------------------------- TIMER RESET ------------------------------- # 
-
+def reset_timer():
+    window.after_cancel(count_timer)
+    canvas.itemconfig(counter, text="00:00")
+    check_mark.config(text="")
+    timer.config(text="Timer", foreground=GREEN)
+    global reps
+    reps = 0
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
-    count_down(5)
-# ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
+    global reps
+    reps += 1
+    working = WORK_MIN * 60
+    short_break = SHORT_BREAK_MIN * 60
+    long_break = LONG_BREAK_MIN * 60
+    print(reps)
+    if reps == 1 or reps == 3 or reps == 5 or reps == 7:
+        count_down(working)
+        timer.config(text="Work")
+    elif reps == 2 or reps == 4 or reps == 6:
+        count_down(short_break)
+        timer.config(text="Break", foreground=PINK)
+        if reps == 2:
+            check_mark.config(text="✓")
+        elif reps == 4:
+            check_mark.config(text="✓✓")
+        elif reps == 6:
+            check_mark.config(text="✓✓✓")
+    elif reps == 8:
+        count_down(long_break)
+        timer.config(text="Break", foreground=RED)
+        check_mark.config(text="✓✓✓✓")
+    else:
+        reset_timer()
+
+# ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
 def count_down(count):
-    canvas.itemconfig(counter, text=f"00:0{count}")
+    global count_timer
+    count_min = math.floor(count / 60)
+    count_sec = count % 60
+    if count_sec == 0 or count_sec < 10:
+        count_sec = f"0{count_sec}"
+    if count_min < 10:
+        count_min = f"0{count_min}"
+
+    canvas.itemconfig(counter, text=f"{count_min}:{count_sec}")
     if count > 0:
-        window.after(1000, count_down, count - 1)
+        count_timer = window.after(1000, count_down, count - 1)
+    else:
+        start_timer()
+
 # ---------------------------- UI SETUP ------------------------------- #
 
 window = Tk()
@@ -39,10 +85,10 @@ canvas.grid(column=1, row=1)
 start_button = Button(text="Start", command=start_timer)
 start_button.grid(column=0, row=2)
 
-check_mark = Label(text="✓", background=YELLOW, foreground=GREEN)
+check_mark = Label(text="", background=YELLOW, foreground=GREEN)
 check_mark.grid(column=1, row=3)
 
-reset_button = Button(text="Reset")
+reset_button = Button(text="Reset", command=reset_timer)
 reset_button.grid(column=2, row=2)
 
 
