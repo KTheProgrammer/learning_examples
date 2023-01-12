@@ -8,7 +8,7 @@ for i in range(3):
   sammy.forward(100)
   sammy.right(120)
 for i in range(4):
-  sammy.color("red")
+  sammy.color("orange")
   sammy.forward(100)
   sammy.right(90)
 for i in range(5):
